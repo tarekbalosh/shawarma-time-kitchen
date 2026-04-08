@@ -86,7 +86,12 @@ export function initMobileMenu() {
 
     // Close menu when clicking outside
     document.addEventListener('click', (e) => {
-      if (!e.target.closest('[data-menu-toggle]') && !e.target.closest('[data-mobile-menu]')) {
+      const target = e.target as HTMLElement | null
+      if (
+        target &&
+        !target.closest('[data-menu-toggle]') &&
+        !target.closest('[data-mobile-menu]')
+      ) {
         mobileMenu.classList.remove('active')
         menuToggle.setAttribute('aria-expanded', 'false')
       }
