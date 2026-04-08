@@ -102,23 +102,24 @@ export function initMobileMenu() {
 // ===== FORM VALIDATION =====
 export function initFormValidation() {
   const forms = document.querySelectorAll('form')
-  
+
   forms.forEach((form) => {
     form.addEventListener('submit', (e) => {
       if (!form.checkValidity()) {
         e.preventDefault()
         e.stopPropagation()
-        
+
         // Add visual feedback
         const inputs = form.querySelectorAll('input, textarea, select')
         inputs.forEach((input) => {
-          if (!input.checkValidity()) {
-            input.style.borderColor = '#ff6b35'
-            input.style.boxShadow = '0 0 0 4px rgba(255, 107, 53, 0.2)'
-            
+          const htmlInput = input as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+          if (!htmlInput.checkValidity()) {
+            htmlInput.style.borderColor = '#ff6b35'
+            htmlInput.style.boxShadow = '0 0 0 4px rgba(255, 107, 53, 0.2)'
+
             setTimeout(() => {
-              input.style.borderColor = ''
-              input.style.boxShadow = ''
+              htmlInput.style.borderColor = ''
+              htmlInput.style.boxShadow = ''
             }, 2000)
           }
         })
@@ -130,37 +131,38 @@ export function initFormValidation() {
 // ===== LAZY LOAD IMAGES =====
 export function initLazyLoadImages() {
   const images = document.querySelectorAll('img[data-src]')
-  
+
   const imageObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        const img = entry.target
-        img.src = img.dataset.src
+        const img = entry.target as HTMLImageElement
+        img.src = img.dataset.src!
         img.removeAttribute('data-src')
         img.classList.add('loaded')
         observer.unobserve(img)
       }
     })
   })
-  
+
   images.forEach((img) => imageObserver.observe(img))
 }
 
 // ===== PARALLAX EFFECT =====
 export function initParallax() {
   const parallaxElements = document.querySelectorAll('[data-parallax]')
-  
+
   if (parallaxElements.length === 0) return
-  
+
   window.addEventListener('scroll', () => {
     parallaxElements.forEach((element) => {
+      const htmlElement = element as HTMLElement
       const scrollPosition = window.scrollY
-      const elementPosition = element.offsetTop
-      const elementHeight = element.offsetHeight
-      
+      const elementPosition = htmlElement.offsetTop
+      const elementHeight = htmlElement.offsetHeight
+
       if (scrollPosition + window.innerHeight > elementPosition && scrollPosition < elementPosition + elementHeight) {
         const yPos = (scrollPosition - elementPosition) * 0.5
-        element.style.backgroundPosition = `center calc(50% + ${yPos}px)`
+        htmlElement.style.backgroundPosition = `center calc(50% + ${yPos}px)`
       }
     })
   })
@@ -169,16 +171,17 @@ export function initParallax() {
 // ===== COUNTER ANIMATION =====
 export function initCounterAnimation() {
   const counters = document.querySelectorAll('[data-count]')
-  
+
   const countObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting && !entry.target.dataset.counted) {
-        countUp(entry.target)
-        entry.target.dataset.counted = 'true'
+      const target = entry.target as HTMLElement
+      if (entry.isIntersecting && !target.dataset.counted) {
+        countUp(target)
+        target.dataset.counted = 'true'
       }
     })
   }, { threshold: 0.5 })
-  
+
   counters.forEach((counter) => countObserver.observe(counter))
 }
 
@@ -203,24 +206,26 @@ function countUp(element) {
 export function initFilterAnimation() {
   const filterButtons = document.querySelectorAll('[data-filter]')
   const filterItems = document.querySelectorAll('[data-filter-item]')
-  
+
   filterButtons.forEach((button) => {
-    button.addEventListener('click', () => {
+    const htmlButton = button as HTMLElement
+    htmlButton.addEventListener('click', () => {
       filterButtons.forEach((btn) => btn.classList.remove('active'))
-      button.classList.add('active')
-      
-      const filter = button.dataset.filter
-      
+      htmlButton.classList.add('active')
+
+      const filter = htmlButton.dataset.filter
+
       filterItems.forEach((item) => {
-        if (filter === '*' || item.dataset.filterItem === filter) {
-          item.style.display = 'block'
+        const htmlItem = item as HTMLElement
+        if (filter === '*' || htmlItem.dataset.filterItem === filter) {
+          htmlItem.style.display = 'block'
           setTimeout(() => {
-            item.classList.add('visible')
+            htmlItem.classList.add('visible')
           }, 10)
         } else {
-          item.classList.remove('visible')
+          htmlItem.classList.remove('visible')
           setTimeout(() => {
-            item.style.display = 'none'
+            htmlItem.style.display = 'none'
           }, 300)
         }
       })
@@ -232,10 +237,11 @@ export function initFilterAnimation() {
 export function initModals() {
   const modals = document.querySelectorAll('[data-modal]')
   const triggers = document.querySelectorAll('[data-modal-trigger]')
-  
+
   triggers.forEach((trigger) => {
-    trigger.addEventListener('click', () => {
-      const modalId = trigger.dataset.modalTrigger
+    const htmlTrigger = trigger as HTMLElement
+    htmlTrigger.addEventListener('click', () => {
+      const modalId = htmlTrigger.dataset.modalTrigger
       const modal = document.querySelector(`[data-modal="${modalId}"]`)
       if (modal) {
         modal.classList.add('active')
@@ -272,25 +278,29 @@ export function initSearch() {
   if (!searchInput) return
   
   searchInput.addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase()
+    const htmlTarget = e.target as HTMLInputElement
+    const query = htmlTarget.value.toLowerCase()
     let visibleCount = 0
     
     searchableItems.forEach((item) => {
+      const htmlItem = item as HTMLElement
       const text = item.textContent.toLowerCase()
       if (text.includes(query)) {
-        item.style.display = 'block'
-        item.classList.add('visible')
+        htmlItem.style.display = 'block'
+        htmlItem.classList.add('visible')
         visibleCount++
       } else {
-        item.classList.remove('visible')
-        item.style.display = 'none'
+        htmlItem.classList.remove('visible')
+        htmlItem.style.display = 'none'
       }
     })
     
     if (searchResults && visibleCount === 0 && query) {
-      searchResults.innerHTML = '<p class="text-center text-gray-500">No results found</p>'
-    } else {
-      searchResults.innerHTML = ''
+      const htmlResults = searchResults as HTMLElement
+      htmlResults.innerHTML = '<p class="text-center text-gray-500">No results found</p>'
+    } else if (searchResults) {
+      const htmlResults = searchResults as HTMLElement
+      htmlResults.innerHTML = ''
     }
   })
 }
