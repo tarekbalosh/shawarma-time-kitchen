@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import MenuFilter from '@/components/MenuFilter'
 
 const menuItems = [
@@ -166,22 +167,27 @@ export default function MenuPage() {
                 style={{ animationDelay: `${(index % 3) * 0.1}s` }}
               >
                 <div className="card-image relative overflow-hidden bg-gray-200">
-                  <img
+                  <Image
                     src={item.image}
                     alt={item.name}
+                    fill
                     className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
                 <div className="p-6 flex flex-col h-full">
-                  <h3 className="text-lg font-bold text-white bg-gradient-to-r from-orange-500 to-orange-400 rounded-lg px-4 py-3 mb-4 text-center">
+                  <h3 className="text-lg font-bold text-white bg-gradient-to-r from-orange-500 to-orange-400 rounded-lg px-4 py-3 mb-3 text-center">
                     {item.name}
                   </h3>
+                  <div className="inline-flex items-center justify-center gap-2 rounded-full bg-orange-100 text-orange-900 px-4 py-2 mb-5 text-sm font-semibold shadow-sm mx-auto">
+                    <span>{item.price}</span>
+                  </div>
                   <p className="text-gray-600 text-sm leading-relaxed flex-grow mb-6">
                     {item.description}
                   </p>
                   <div className="bg-gradient-to-r from-orange-500 to-orange-400 text-white text-center py-4 rounded-lg font-bold hover:shadow-lg transition-shadow">
-                    {item.price}
+                    <span className="text-base font-semibold block mb-2">Price</span>
+                    <span className="text-xl md:text-2xl font-extrabold">{item.price}</span>
                   </div>
                 </div>
               </div>

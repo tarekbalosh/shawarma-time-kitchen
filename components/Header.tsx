@@ -14,9 +14,10 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <div className="w-14 h-14 md:w-16 md:h-16 relative site-logo">
-              <img
+              <Image
                 src="/images/logo.png"
                 alt="Shawarma Time Kitchen Logo"
+                fill
                 className="w-full h-full object-contain"
               />
             </div>

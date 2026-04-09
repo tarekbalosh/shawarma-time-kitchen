@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function AboutPage() {
   return (
@@ -16,9 +17,10 @@ export default function AboutPage() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="relative h-96 order-2 md:order-1">
-              <img
+              <Image
                 src="/images/f5.png"
                 alt="Shawarma Time Kitchen"
+                fill
                 className="w-full h-full object-cover rounded-lg shadow-lg"
               />
             </div>
@@ -32,7 +34,7 @@ export default function AboutPage() {
                 is crafted with care, using only the freshest ingredients.
               </p>
               <p className="text-gray-700 text-lg leading-relaxed mb-8">
-                Don't forget to try our freshly made sandwiches and cool down with our selection of fresh juices. We pride
+                Don&apos;t forget to try our freshly made sandwiches and cool down with our selection of fresh juices. We pride
                 ourselves on authentic recipes passed down through generations, combined with modern culinary techniques
                 to bring you an unforgettable dining experience.
               </p>
@@ -73,7 +75,7 @@ export default function AboutPage() {
               <div className="text-5xl mb-4">⚡</div>
               <h3 className="text-2xl font-bold mb-4">Fast Service</h3>
               <p className="text-gray-600">
-                Quick preparation without compromising quality. We believe great food shouldn't make you wait too long.
+                Quick preparation without compromising quality. We believe great food shouldn&apos;t make you wait too long.
               </p>
             </div>
           </div>

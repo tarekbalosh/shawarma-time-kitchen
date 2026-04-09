@@ -9,9 +9,10 @@ export default function Home() {
     <main>
       {/* Hero Section */}
       <section className="relative h-96 md:h-[600px] overflow-hidden bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400 hero-overlay">
-        <img
+        <Image
           src="/images/header-ph4.avif"
           alt="Shawarma Time Kitchen"
+          fill
           className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-40"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center justify-center">
@@ -37,9 +38,10 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div className="relative h-96 md:h-full min-h-96 overflow-hidden rounded-2xl shadow-2xl group scroll-animate-left">
-              <img
+              <Image
                 src="/images/f5.png"
                 alt="Shawarma"
+                fill
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
@@ -53,7 +55,7 @@ export default function Home() {
                 dishes such as shawarma, kebab, and the beloved mandy rice served with tender chicken or lamb.
               </p>
               <p className="text-gray-700 text-lg leading-relaxed mb-8">
-                Every bite is crafted with care, using only the freshest ingredients. Don't forget to try our freshly made sandwiches
+                Every bite is crafted with care, using only the freshest ingredients. Don&apos;t forget to try our freshly made sandwiches
                 and cool down with our selection of fresh juices.
               </p>
               <Link
