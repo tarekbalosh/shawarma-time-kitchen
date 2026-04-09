@@ -125,6 +125,12 @@ const categoryList = [
   { value: 'crispy', label: 'Crispy', icon: '🍗' },
 ]
 
+const sideFeatures = [
+  { title: 'Fast Delivery', text: 'Order now and get your meal quickly.', icon: '⚡' },
+  { title: 'Fresh Ingredients', text: 'Prepared daily with premium quality.', icon: '🥗' },
+  { title: 'Special Offer', text: 'Enjoy exclusive deals on select items.', icon: '🔥' },
+]
+
 export default function MenuPage() {
   const [filteredItems, setFilteredItems] = useState(menuItems)
   const [activeFilter, setActiveFilter] = useState('*')
@@ -174,28 +180,28 @@ export default function MenuPage() {
       </section>
 
       <section className="py-20 md:py-32 section-surface scroll-animate">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="grid gap-8 lg:grid-cols-[2.5fr_1fr]">
             <div>
-              <div className="mb-10 overflow-x-auto py-2">
-                <div className="inline-flex gap-4">
+              <div className="mb-10 py-2">
+                <div className="flex flex-wrap gap-3">
                   {categoryList.map(category => (
                     <button
                       key={category.value}
                       onClick={() => handleFilter(category.value)}
-                      className={`min-w-[140px] flex-shrink-0 rounded-3xl border px-5 py-3 text-left transition-all duration-300 ${
+                      className={`w-full sm:w-auto rounded-3xl border px-4 py-3 text-left transition-all duration-300 ${
                         activeFilter === category.value
                           ? 'border-transparent bg-gradient-to-r from-orange-500 to-orange-400 text-white shadow-xl'
                           : 'border-gray-200 bg-white text-gray-700 hover:border-orange-300 hover:bg-orange-50'
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-xl shadow-sm">
+                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-lg shadow-sm">
                           {category.icon}
                         </span>
                         <div>
-                          <p className="text-sm opacity-80">Category</p>
-                          <p className="font-semibold">{category.label}</p>
+                          <p className="text-[11px] opacity-80">Category</p>
+                          <p className="text-sm font-semibold">{category.label}</p>
                         </div>
                       </div>
                     </button>
@@ -203,14 +209,14 @@ export default function MenuPage() {
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-8">
+              <div className="grid gap-6 md:grid-cols-2">
                 {filteredItems.map((item, index) => (
                   <div
                     key={item.id}
                     className="card-advanced bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 scroll-animate"
                     style={{ animationDelay: `${(index % 3) * 0.1}s` }}
                   >
-                    <div className="card-image relative h-60 overflow-hidden bg-gray-100">
+                    <div className="card-image relative h-52 md:h-60 overflow-hidden bg-gray-100">
                       <Image
                         src={item.image}
                         alt={item.name}
@@ -218,24 +224,24 @@ export default function MenuPage() {
                         className="object-cover transition-transform duration-500 hover:scale-110"
                       />
                     </div>
-                    <div className="p-6 flex flex-col h-full">
-                      <div className="flex items-start justify-between gap-4">
+                    <div className="p-5 flex flex-col h-full">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div>
-                          <h3 className="text-xl font-bold text-slate-900 mb-2">{item.name}</h3>
-                          <p className="text-gray-500 text-sm leading-relaxed">{item.description}</p>
+                          <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-2">{item.name}</h3>
+                          <p className="text-gray-500 text-sm md:text-base leading-relaxed">{item.description}</p>
                         </div>
                         <div className="rounded-3xl bg-orange-50 px-4 py-2 text-orange-700 font-semibold text-sm">
                           {item.price}
                         </div>
                       </div>
-                      <div className="mt-6 flex items-center justify-between gap-4">
+                      <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <button
                           onClick={() => addToCart({ id: item.id, name: item.name, price: item.price, image: item.image })}
-                          className="inline-flex items-center justify-center rounded-full bg-orange-500 px-5 py-3 text-white font-semibold shadow-lg transition duration-300 hover:bg-orange-600"
+                          className="inline-flex w-full items-center justify-center rounded-full bg-orange-500 px-4 py-3 text-sm font-semibold text-white shadow-lg transition duration-300 hover:bg-orange-600 sm:w-auto"
                         >
                           Add
                         </button>
-                        <span className="text-sm text-gray-500">Best choice</span>
+                        <span className="text-xs text-gray-500 sm:text-sm">Best choice</span>
                       </div>
                     </div>
                   </div>
@@ -243,15 +249,31 @@ export default function MenuPage() {
               </div>
             </div>
 
-            <aside className="rounded-3xl border border-gray-200 bg-white p-6 shadow-lg">
-              <div className="flex items-center justify-between mb-6">
+            <aside className="rounded-3xl border border-gray-200 bg-white p-5 shadow-lg md:p-6">
+              <div className="flex items-center justify-between mb-5 gap-4">
                 <div>
-                  <h2 className="text-2xl font-bold text-slate-900">My Order</h2>
+                  <h2 className="text-xl font-bold text-slate-900">My Order</h2>
                   <p className="text-sm text-gray-500">{cartItems.length} item{cartItems.length === 1 ? '' : 's'}</p>
                 </div>
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-orange-100 text-orange-600 text-lg">
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-orange-100 text-orange-600 text-lg">
                   🛒
                 </div>
+              </div>
+
+              <div className="grid gap-4 mb-6">
+                {sideFeatures.map((feature, index) => (
+                  <div key={index} className="rounded-3xl border border-gray-100 bg-orange-50 p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-lg shadow-sm">
+                        {feature.icon}
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-slate-900">{feature.title}</h3>
+                        <p className="text-sm text-gray-500">{feature.text}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
 
               <div className="space-y-4">
