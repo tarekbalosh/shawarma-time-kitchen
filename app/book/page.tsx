@@ -1,7 +1,7 @@
 'use client'
 
 import { FormEvent, useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, type Variants } from 'framer-motion'
 
 export default function BookPage() {
   const [formData, setFormData] = useState({
@@ -73,8 +73,8 @@ export default function BookPage() {
   }
 
   // UI Animation Sequences
-  const fadeUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }
-  const staggerContainer = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } }
+  const fadeUp: Variants = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' as const } } }
+  const staggerContainer: Variants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } }
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-[#0f172a] transition-colors duration-300 overflow-x-hidden font-sans">
