@@ -19,6 +19,10 @@ const menuItems = [
   { id: 12, name: 'Shawarma Beef',         category: 'shawarma', price: 'M : RM12 | L : RM16', image: 'https://www.corriecooks.com/wp-content/uploads/2023/08/beefshawarma.jpg' },
   { id: 13, name: 'Shawarma Beef Cheese',  category: 'shawarma', price: 'M : RM14 | L : RM18', image: 'https://thumbs.dreamstime.com/b/shawarma-sandwich-gyro-fresh-roll-lavash-pita-bread-chicken-beef-shawarma-falafel-recipetin-eatsfilled-grilled-shawarma-166799143.jpg' },
   { id: 14, name: 'Shawarma Beef Fries',   category: 'shawarma', price: 'M : RM14 | L : RM18', image: 'https://static.wixstatic.com/media/443ab6_d5bfc18415034a099a1f3f5671b3f385~mv2.jpg/v1/fill/w_315,h_315,al_c,lg_1,q_80,enc_avif,quality_auto/443ab6_d5bfc18415034a099a1f3f5671b3f385~mv2.jpg' },
+  { id: 15, name: 'Mix Grill Platter',     category: 'grill',    price: 'RM35', image: '/images/f5.png' },
+  { id: 16, name: 'Beef Kebab Wrap',       category: 'grill',    price: 'RM15', image: '/images/f6.png' },
+  { id: 17, name: 'Fresh Orange Juice',    category: 'drinks',   price: 'RM8',  image: '/images/f8.png' },
+  { id: 18, name: 'Arabic Salad',          category: 'salads',   price: 'RM10', image: '/images/f4.png' },
 ]
 
 const categoryList = [
@@ -26,6 +30,9 @@ const categoryList = [
   { value: 'shawarma', label: 'Shawarma',    icon: '🌯' },
   { value: 'rice',     label: 'Rice Dishes', icon: '🍚' },
   { value: 'crispy',   label: 'Crispy',      icon: '🍗' },
+  { value: 'grill',    label: 'Grill',       icon: '🥩' },
+  { value: 'drinks',   label: 'Drinks',      icon: '🥤' },
+  { value: 'salads',   label: 'Salads',      icon: '🥗' },
 ]
 
 /* ── Generate a short order reference number ── */
@@ -40,8 +47,15 @@ export default function MenuPage() {
   const [activeFilter, setActiveFilter]   = useState('*')
   const [animatingIds, setAnimatingIds]   = useState<Set<number>>(new Set())
   const [cartItems, setCartItems] = useState<
-    Array<{ id: number; name: string; price: string; quantity: number; image: string }>
+    Array<{ id: number | string; name: string; price: string; quantity: number; image: string }>
   >([])
+
+  // Variant Modal
+  const [variantModalItem, setVariantModalItem] = useState<{ id: number; name: string; price: string; image: string; category: string } | null>(null)
+  const [selectedVariant, setSelectedVariant]   = useState<{ label: string; price: string } | null>(null)
+  
+  // Storage init
+  const [isMounted, setIsMounted] = useState(false)
 
   // Mobile cart drawer
   const [cartOpen, setCartOpen] = useState(false)
@@ -71,7 +85,7 @@ export default function MenuPage() {
     return m ? Number(m[1]) : 0
   }
 
-  const addToCart = (item: { id: number; name: string; price: string; image: string }) => {
+  const addToCart = (item: { id: number | string; name: string; price: string; image: string }) => {
     setCartItems(prev => {
       const ex = prev.find(c => c.id === item.id)
       if (ex) return prev.map(c => c.id === item.id ? { ...c, quantity: c.quantity + 1 } : c)
@@ -82,11 +96,31 @@ export default function MenuPage() {
     toastTimer.current = setTimeout(() => setToast(t => ({ ...t, visible: false })), 2500)
   }
 
-  const updateQuantity = (id: number, delta: number) => {
+  const updateQuantity = (id: number | string, delta: number) => {
     setCartItems(prev =>
       prev.map(i => i.id === id ? { ...i, quantity: Math.max(0, i.quantity + delta) } : i)
           .filter(i => i.quantity > 0)
     )
+  }
+
+  const handleAddClick = (item: { id: number; name: string; price: string; image: string; category: string }) => {
+    if (item.price.includes('|')) {
+      setVariantModalItem(item)
+      setSelectedVariant(null)
+    } else {
+      addToCart(item)
+    }
+  }
+
+  const handleVariantAdd = () => {
+    if (!variantModalItem || !selectedVariant) return
+    addToCart({
+      id: `${variantModalItem.id}-${selectedVariant.label}`,
+      name: `${variantModalItem.name} (${selectedVariant.label})`,
+      price: selectedVariant.price,
+      image: variantModalItem.image
+    })
+    setVariantModalItem(null)
   }
 
   const total    = cartItems.reduce((s, i) => s + getNumericPrice(i.price) * i.quantity, 0)
@@ -110,6 +144,21 @@ export default function MenuPage() {
     document.body.style.overflow = (invoiceOpen || cartOpen) ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [invoiceOpen, cartOpen])
+
+  /* ── Sync cart to localStorage ── */
+  useEffect(() => {
+    const saved = localStorage.getItem('stk_cart')
+    if (saved) {
+      try { setCartItems(JSON.parse(saved)) } catch(e) {}
+    }
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (isMounted) {
+      localStorage.setItem('stk_cart', JSON.stringify(cartItems))
+    }
+  }, [cartItems, isMounted])
 
   /* ──────────────────────────────────────────────────────── JSX ─── */
   return (
@@ -170,7 +219,7 @@ export default function MenuPage() {
                     <div className="mp-card-footer">
                       <span className="mp-card-price">{item.price}</span>
                       <button
-                        onClick={() => addToCart({ id: item.id, name: item.name, price: item.price, image: item.image })}
+                        onClick={() => handleAddClick(item)}
                         className="mp-add-btn" aria-label={`Add ${item.name} to cart`}
                       >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -309,6 +358,56 @@ export default function MenuPage() {
         <span><strong>{toast.name}</strong> added to your order!</span>
       </div>
 
+      {/* ══ VARIANT MODAL ══════════════════════════════════════════════ */}
+      <div
+        className={`inv-overlay ${variantModalItem ? 'inv-overlay-show' : ''}`}
+        onClick={() => setVariantModalItem(null)}
+        aria-hidden="true"
+        style={{ zIndex: 90 }}
+      />
+      <div className={`inv-modal ${variantModalItem ? 'inv-modal-show' : ''}`} role="dialog" aria-modal="true" aria-label="Select Variant" style={{ zIndex: 100 }}>
+        {variantModalItem && (
+          <div className="var-card" onClick={e => e.stopPropagation()}>
+            <div className="var-body" style={{ marginTop: '30px' }}>
+              <div className="var-img">
+                <Image src={variantModalItem.image} alt={variantModalItem.name} fill className="object-cover" unoptimized />
+              </div>
+              <h2 className="var-title">{variantModalItem.name}</h2>
+              <div style={{ color: 'var(--txt-secondary)', fontSize: '13px', marginTop: '-8px' }}>Select an option Below</div>
+              
+              <div className="var-opts">
+                {variantModalItem.price.split('|').map((opt, i) => {
+                  const [lbl, prc] = opt.split(':').map(s => s.trim())
+                  const isActive = selectedVariant?.label === lbl
+                  return (
+                    <button
+                      key={i}
+                      className={`var-opt-btn ${isActive ? 'var-opt-active' : ''}`}
+                      onClick={() => setSelectedVariant({ label: lbl, price: prc })}
+                    >
+                      <span className="var-opt-lbl">{lbl}</span>
+                      <span className="var-opt-prc">{prc}</span>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+            
+            <div className="inv-actions">
+              <button className="inv-btn-secondary" onClick={() => setVariantModalItem(null)}>Cancel</button>
+              <button 
+                className="inv-btn-primary" 
+                onClick={handleVariantAdd}
+                disabled={!selectedVariant}
+                style={{ opacity: selectedVariant ? 1 : 0.5 }}
+              >
+                Add {selectedVariant ? selectedVariant.price : 'To Order'}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* ══ INVOICE MODAL ══════════════════════════════════════════════ */}
       <div
         className={`inv-overlay ${invoiceOpen ? 'inv-overlay-show' : ''}`}
@@ -330,7 +429,7 @@ export default function MenuPage() {
             </div>
             <div>
               <div className="inv-brand">Shawarma Time Kitchen</div>
-              <div className="inv-brand-sub">Jalan Teknokrat 6, Cyberjaya, 63000</div>
+              <div className="inv-brand-sub">12, Jalan Suadamai 1/3, Tun Hussein Onn, 43200 Cheras</div>
               <div className="inv-brand-sub">📞 011-3903 9304 · info@shawarmatimekitchen.com</div>
             </div>
             <div className="inv-stamp">ORDER<br/>CONFIRMED</div>
@@ -425,7 +524,7 @@ export default function MenuPage() {
               </div>
               <div className="inv-qr-txt">
                 <strong>Ref: {invoiceRef}</strong>
-                <br/>Cyberjaya Branch
+                <br/>Cheras Branch
               </div>
             </div>
           </div>

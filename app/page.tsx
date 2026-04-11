@@ -118,8 +118,8 @@ export default function Home() {
             className="absolute rounded-full overflow-hidden border-[10px] md:border-[14px] border-white group"
             style={{
               top: 'clamp(160px,25vw,260px)',
-              width: 'clamp(300px,50vw,800px)',
-              height: 'clamp(300px,50vw,800px)',
+              width: 'clamp(240px,70vw,800px)',
+              height: 'clamp(240px,70vw,800px)',
               boxShadow: '0 20px 60px rgba(0,0,0,0.14)',
               background: 'var(--bg-card)',
               borderColor: 'var(--bg-surface)',
@@ -146,7 +146,7 @@ export default function Home() {
 
       {/* ══ 2. ORDER BAR ═════════════════════════════════════════════ */}
       <section className="relative z-20 w-full flex justify-center px-4" style={{ marginTop: '-2rem' }}>
-        <div className="bg-black rounded-full p-2 flex flex-col md:flex-row shadow-2xl items-stretch md:items-center w-full max-w-4xl text-white gap-2 md:gap-0">
+        <div className="bg-black rounded-[2rem] md:rounded-full p-2 flex flex-col md:flex-row shadow-2xl items-stretch md:items-center w-full max-w-4xl text-white gap-2 md:gap-0">
           <div className="bg-[#cd4f27] px-6 py-3 rounded-full font-bold text-base whitespace-nowrap w-full md:w-auto text-center uppercase tracking-wide">
             Shawarma Time
           </div>
@@ -175,21 +175,7 @@ export default function Home() {
             Visit Any of Our Locations
           </h2>
 
-          {/* Tabs */}
-          <div className="flex justify-center gap-6 md:gap-12 font-bold text-xs md:text-sm tracking-wider uppercase mb-12 border-b pb-4 overflow-x-auto" style={{ borderColor: 'var(--border)' }}>
-            {['Cyberjaya', 'Kuala Lumpur', 'Putrajaya'].map((loc, i) => (
-              <button
-                key={loc}
-                className={`relative pb-4 whitespace-nowrap transition-colors ${i === 0 ? 'text-orange-600' : 'hover:text-orange-600'}`}
-                style={{ color: i === 0 ? '#ea580c' : 'var(--txt-muted)' }}
-              >
-                {loc}
-                {i === 0 && (
-                  <div className="absolute bottom-[-17px] left-1/2 -translate-x-1/2 w-3 h-3 bg-orange-600 rounded-full ring-4 ring-orange-200" />
-                )}
-              </button>
-            ))}
-          </div>
+
 
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
             {/* Scooter SVG */}
@@ -212,9 +198,9 @@ export default function Home() {
             {/* Location details */}
             <div className="w-full md:w-1/2 flex flex-col sm:flex-row gap-6 md:gap-8">
               <div className="flex-1">
-                <h3 className="text-xl md:text-2xl font-bold uppercase mb-2" style={{ color: 'var(--txt-primary)' }}>Cyberjaya</h3>
+                <h3 className="text-xl md:text-2xl font-bold uppercase mb-2" style={{ color: 'var(--txt-primary)' }}>Cheras</h3>
                 <p className="mb-5 font-medium text-sm leading-relaxed" style={{ color: 'var(--txt-secondary)' }}>
-                  Jalan Teknokrat 6, Cyberjaya,<br />63000 Cyberjaya, Selangor
+                  12, Jalan Suadamai 1/3, Tun Hussein Onn,<br />43200 Cheras, Selangor
                 </p>
                 <div className="mb-5">
                   <h4 className="font-bold uppercase tracking-wider text-xs mb-1" style={{ color: 'var(--txt-primary)' }}>Hours of Operation</h4>
