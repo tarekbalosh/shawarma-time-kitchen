@@ -1,312 +1,443 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
+import './menu.css'
 
 const menuItems = [
-  {
-    id: 1,
-    name: 'Mandi Chicken',
-    category: 'rice',
-    price: 'RM19',
-    description: 'Chicken Mandi is a spiced, tender chicken served over fragrant basmati rice, often garnished with onions, almonds, and raisins, with a smoky flavor.',
-    image: 'https://fast.ejazmine.com/wp-content/uploads/2021/11/Untitled-design-2-2.jpg',
-  },
-  {
-    id: 2,
-    name: 'Mandi Shawarma Beef',
-    category: 'rice',
-    price: 'RM25',
-    description: 'Mandi beef is a rice dish with slow-cooked, spiced lamb served over fragrant basmati rice, garnished with onions, almonds, and raisins, and finished with a smoky touch.',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpub6Qh3JvyoyuPtNvb0SS02jGimrTAKYKATf5ljrfkqSeHm1vN54dhc2caIvhHxfd1pU&usqp=CAU',
-  },
-  {
-    id: 3,
-    name: 'Mandi Lamb',
-    category: 'rice',
-    price: 'RM33',
-    description: 'Mandi Lamb is a fragrant basmati rice dish cooked with spices, served with tender, flavorful lamb, and topped with fried onions, raisins, and nuts.',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXDNaxXb_fJu-ixF1teYBwC3kq-HxBThBXLw&s',
-  },
-  {
-    id: 4,
-    name: 'Kabsa Chicken',
-    category: 'rice',
-    price: 'RM23',
-    description: 'Chicken Kabsa is a spiced basmati rice dish cooked with aromatic spices like cinnamon, cardamom, and cloves, topped with tender chicken, raisins, and toasted almonds.',
-    image: 'https://resepichenom.com/images/recipes/Chicken_Kabsah_1_x_1.jpg',
-  },
-  {
-    id: 5,
-    name: 'Kabsa Shawarma Beef',
-    category: 'rice',
-    price: 'RM28',
-    description: 'Kabsa Shawarma Beef is a fusion of spiced basmati rice and grilled marinated beef shawarma, topped with caramelized onions and nuts for a rich, savory experience.',
-    image: 'https://resepichenom.com/images/recipes/Chicken_Kabsah_1_x_1.jpg',
-  },
-  {
-    id: 6,
-    name: 'Kabsa Lamb',
-    category: 'rice',
-    price: 'RM36',
-    description: 'Lamb Kabsa is a traditional Arabian rice dish made with tender lamb, aromatic spices, and tomato, served over basmati rice and garnished with nuts and raisins.',
-    image: 'https://resepichenom.com/images/recipes/Chicken_Kabsah_1_x_1.jpg',
-  },
-  {
-    id: 7,
-    name: 'Crispy Chicken Set',
-    category: 'crispy',
-    price: 'RM28',
-    description: 'Fried Chicken and Chips is a classic comfort food combo featuring crispy, golden-brown chicken pieces seasoned with herbs and spices, deep-fried to perfection.',
-    image: 'https://thumbs.dreamstime.com/z/chicken-tenders-fries-fried-french-dipping-sauce-93035208.jpg',
-  },
-  {
-    id: 8,
-    name: 'Crispy Chicken Roll',
-    category: 'crispy',
-    price: 'RM17',
-    description: 'Crispy Chicken Roll is a crunchy, deep-fried wrap filled with seasoned chicken and veggies. Perfect as a tasty snack or appetizer.',
-    image: 'https://img.freepik.com/premium-photo/fried-chicken-wraps-white-paper-wrap-white-background_439318-4590.jpg',
-  },
-  {
-    id: 9,
-    name: 'Shawarma Chicken',
-    category: 'shawarma',
-    price: 'M : RM9 | L : RM14',
-    description: 'Tender, marinated chicken grilled to perfection and wrapped in warm pita.',
-    image: 'https://thebusybaker.ca/wp-content/uploads/2025/03/chicken-shawarma-fb-ig-12-scaled.jpg',
-  },
-  {
-    id: 10,
-    name: 'Shawarma Chicken Cheese',
-    category: 'shawarma',
-    price: 'M : RM10 | L : RM15',
-    description: 'Deliciously marinated chicken shawarma topped with melted cheese, wrapped in warm pita.',
-    image: 'https://previews.123rf.com/images/jeannierv/jeannierv2111/jeannierv211100105/177527882-cheese-roll-of-shawarma-with-cheese-sauce-chicken-and-vegetables-in-pita-bread-on-wooden-dark.jpg',
-  },
-  {
-    id: 11,
-    name: 'Shawarma Chicken Fries',
-    category: 'shawarma',
-    price: 'M : RM10 | L : RM15',
-    description: 'Crispy fries topped with tender, spiced chicken shawarma, drizzled with creamy garlic sauce and fresh veggies.',
-    image: 'https://www.thechunkychef.com/wp-content/uploads/2021/03/Chicken-Shawarma-recipe-card.jpg',
-  },
-  {
-    id: 12,
-    name: 'Shawarma Beef',
-    category: 'shawarma',
-    price: 'M : RM12 | L : RM16',
-    description: 'Spiced beef slow-cooked and sliced thin, wrapped in soft pita bread.',
-    image: 'https://www.corriecooks.com/wp-content/uploads/2023/08/beefshawarma.jpg',
-  },
-  {
-    id: 13,
-    name: 'Shawarma Beef Cheese',
-    category: 'shawarma',
-    price: 'M : RM14 | L : RM18',
-    description: 'Tender, marinated beef shawarma layered with melted cheese, wrapped in warm pita.',
-    image: 'https://thumbs.dreamstime.com/b/shawarma-sandwich-gyro-fresh-roll-lavash-pita-bread-chicken-beef-shawarma-falafel-recipetin-eatsfilled-grilled-shawarma-166799143.jpg',
-  },
-  {
-    id: 14,
-    name: 'Shawarma Beef Fries',
-    category: 'shawarma',
-    price: 'M : RM14 | L : RM18',
-    description: 'Spiced beef slow-cooked and sliced thin, served with crispy fries.',
-    image: 'https://static.wixstatic.com/media/443ab6_d5bfc18415034a099a1f3f5671b3f385~mv2.jpg/v1/fill/w_315,h_315,al_c,lg_1,q_80,enc_avif,quality_auto/443ab6_d5bfc18415034a099a1f3f5671b3f385~mv2.jpg',
-  },
+  { id: 1,  name: 'Mandi Chicken',         category: 'rice',     price: 'RM19', image: 'https://fast.ejazmine.com/wp-content/uploads/2021/11/Untitled-design-2-2.jpg' },
+  { id: 2,  name: 'Mandi Shawarma Beef',   category: 'rice',     price: 'RM25', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpub6Qh3JvyoyuPtNvb0SS02jGimrTAKYKATf5ljrfkqSeHm1vN54dhc2caIvhHxfd1pU&usqp=CAU' },
+  { id: 3,  name: 'Mandi Lamb',            category: 'rice',     price: 'RM33', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXDNaxXb_fJu-ixF1teYBwC3kq-HxBThBXLw&s' },
+  { id: 4,  name: 'Kabsa Chicken',         category: 'rice',     price: 'RM23', image: 'https://resepichenom.com/images/recipes/Chicken_Kabsah_1_x_1.jpg' },
+  { id: 5,  name: 'Kabsa Shawarma Beef',   category: 'rice',     price: 'RM28', image: 'https://resepichenom.com/images/recipes/Chicken_Kabsah_1_x_1.jpg' },
+  { id: 6,  name: 'Kabsa Lamb',            category: 'rice',     price: 'RM36', image: 'https://resepichenom.com/images/recipes/Chicken_Kabsah_1_x_1.jpg' },
+  { id: 7,  name: 'Crispy Chicken Set',    category: 'crispy',   price: 'RM28', image: 'https://thumbs.dreamstime.com/z/chicken-tenders-fries-fried-french-dipping-sauce-93035208.jpg' },
+  { id: 8,  name: 'Crispy Chicken Roll',   category: 'crispy',   price: 'RM17', image: 'https://img.freepik.com/premium-photo/fried-chicken-wraps-white-paper-wrap-white-background_439318-4590.jpg' },
+  { id: 9,  name: 'Shawarma Chicken',      category: 'shawarma', price: 'M : RM9 | L : RM14',  image: 'https://thebusybaker.ca/wp-content/uploads/2025/03/chicken-shawarma-fb-ig-12-scaled.jpg' },
+  { id: 10, name: 'Shawarma Chicken Cheese', category: 'shawarma', price: 'M : RM10 | L : RM15', image: 'https://previews.123rf.com/images/jeannierv/jeannierv2111/jeannierv211100105/177527882-cheese-roll-of-shawarma-with-cheese-sauce-chicken-and-vegetables-in-pita-bread-on-wooden-dark.jpg' },
+  { id: 11, name: 'Shawarma Chicken Fries', category: 'shawarma', price: 'M : RM10 | L : RM15', image: 'https://www.thechunkychef.com/wp-content/uploads/2021/03/Chicken-Shawarma-recipe-card.jpg' },
+  { id: 12, name: 'Shawarma Beef',         category: 'shawarma', price: 'M : RM12 | L : RM16', image: 'https://www.corriecooks.com/wp-content/uploads/2023/08/beefshawarma.jpg' },
+  { id: 13, name: 'Shawarma Beef Cheese',  category: 'shawarma', price: 'M : RM14 | L : RM18', image: 'https://thumbs.dreamstime.com/b/shawarma-sandwich-gyro-fresh-roll-lavash-pita-bread-chicken-beef-shawarma-falafel-recipetin-eatsfilled-grilled-shawarma-166799143.jpg' },
+  { id: 14, name: 'Shawarma Beef Fries',   category: 'shawarma', price: 'M : RM14 | L : RM18', image: 'https://static.wixstatic.com/media/443ab6_d5bfc18415034a099a1f3f5671b3f385~mv2.jpg/v1/fill/w_315,h_315,al_c,lg_1,q_80,enc_avif,quality_auto/443ab6_d5bfc18415034a099a1f3f5671b3f385~mv2.jpg' },
 ]
 
 const categoryList = [
-  { value: '*', label: 'All', icon: '🍽️' },
-  { value: 'shawarma', label: 'Shawarma', icon: '🌯' },
-  { value: 'rice', label: 'Rice Dishes', icon: '🍚' },
-  { value: 'crispy', label: 'Crispy', icon: '🍗' },
+  { value: '*',        label: 'All',         icon: '🍽️' },
+  { value: 'shawarma', label: 'Shawarma',    icon: '🌯' },
+  { value: 'rice',     label: 'Rice Dishes', icon: '🍚' },
+  { value: 'crispy',   label: 'Crispy',      icon: '🍗' },
 ]
+
+/* ── Generate a short order reference number ── */
+function generateRef() {
+  const ts  = Date.now().toString(36).toUpperCase()
+  const rnd = Math.random().toString(36).slice(2, 5).toUpperCase()
+  return `STK-${ts}-${rnd}`
+}
 
 export default function MenuPage() {
   const [filteredItems, setFilteredItems] = useState(menuItems)
-  const [activeFilter, setActiveFilter] = useState('*')
-  const [cartItems, setCartItems] = useState<Array<{ id: number; name: string; price: string; quantity: number; image: string }>>([])
+  const [activeFilter, setActiveFilter]   = useState('*')
+  const [animatingIds, setAnimatingIds]   = useState<Set<number>>(new Set())
+  const [cartItems, setCartItems] = useState<
+    Array<{ id: number; name: string; price: string; quantity: number; image: string }>
+  >([])
 
+  // Mobile cart drawer
+  const [cartOpen, setCartOpen] = useState(false)
+
+  // Toast
+  const [toast, setToast] = useState<{ name: string; visible: boolean }>({ name: '', visible: false })
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Invoice modal
+  const [invoiceOpen, setInvoiceOpen] = useState(false)
+  const [invoiceRef,  setInvoiceRef]  = useState('')
+  const [invoiceDate, setInvoiceDate] = useState('')
+
+  /* ── Filter ── */
   const handleFilter = (category: string) => {
+    if (category === activeFilter) return
+    const next    = category === '*' ? menuItems : menuItems.filter(i => i.category === category)
+    const leaving = new Set(filteredItems.filter(i => !next.find(n => n.id === i.id)).map(i => i.id))
+    setAnimatingIds(leaving)
     setActiveFilter(category)
-    if (category === '*') {
-      setFilteredItems(menuItems)
-    } else {
-      setFilteredItems(menuItems.filter(item => item.category === category))
-    }
+    setTimeout(() => { setFilteredItems(next); setAnimatingIds(new Set()) }, 280)
   }
 
+  /* ── Cart helpers ── */
   const getNumericPrice = (price: string) => {
-    const match = price.match(/RM\s*(\d+)/)
-    return match ? Number(match[1]) : 0
+    const m = price.match(/RM\s*(\d+)/)
+    return m ? Number(m[1]) : 0
   }
 
   const addToCart = (item: { id: number; name: string; price: string; image: string }) => {
     setCartItems(prev => {
-      const existing = prev.find(cartItem => cartItem.id === item.id)
-      if (existing) {
-        return prev.map(cartItem => cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem)
-      }
+      const ex = prev.find(c => c.id === item.id)
+      if (ex) return prev.map(c => c.id === item.id ? { ...c, quantity: c.quantity + 1 } : c)
       return [...prev, { ...item, quantity: 1 }]
     })
+    if (toastTimer.current) clearTimeout(toastTimer.current)
+    setToast({ name: item.name, visible: true })
+    toastTimer.current = setTimeout(() => setToast(t => ({ ...t, visible: false })), 2500)
   }
 
-  const updateQuantity = (id: number, value: number) => {
+  const updateQuantity = (id: number, delta: number) => {
     setCartItems(prev =>
-      prev
-        .map(item => (item.id === id ? { ...item, quantity: Math.max(1, item.quantity + value) } : item))
-        .filter(item => item.quantity > 0)
+      prev.map(i => i.id === id ? { ...i, quantity: Math.max(0, i.quantity + delta) } : i)
+          .filter(i => i.quantity > 0)
     )
   }
 
-  const totalAmount = cartItems.reduce((sum, item) => sum + getNumericPrice(item.price) * item.quantity, 0)
+  const total    = cartItems.reduce((s, i) => s + getNumericPrice(i.price) * i.quantity, 0)
+  const totalQty = cartItems.reduce((s, i) => s + i.quantity, 0)
 
+  /* ── Open invoice ── */
+  const openInvoice = () => {
+    const now = new Date()
+    setInvoiceRef(generateRef())
+    setInvoiceDate(
+      now.toLocaleDateString('en-MY', { day: '2-digit', month: 'long', year: 'numeric' }) +
+      '  ·  ' +
+      now.toLocaleTimeString('en-MY', { hour: '2-digit', minute: '2-digit' })
+    )
+    setInvoiceOpen(true)
+    setCartOpen(false)            // close mobile drawer when invoice opens
+  }
+
+  /* ── Block body scroll when overlays open ── */
+  useEffect(() => {
+    document.body.style.overflow = (invoiceOpen || cartOpen) ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [invoiceOpen, cartOpen])
+
+  /* ──────────────────────────────────────────────────────── JSX ─── */
   return (
-    <main>
-      <section className="relative h-64 md:h-80 bg-gradient-to-r from-orange-500 to-orange-400 flex items-center justify-center">
-        <div className="text-center text-white">
-          <h1 className="text-3xl md:text-4xl font-bold font-display">Our Menu</h1>
-          <p className="text-base md:text-lg mt-2 opacity-90">Discover our delicious selection and order instantly</p>
+    <main className="mp-root">
+
+      {/* ══ HERO ══════════════════════════════════════════════════════ */}
+      <section className="mp-hero">
+        <div className="mp-hero-orb mp-hero-orb1" />
+        <div className="mp-hero-orb mp-hero-orb2" />
+        <div className="mp-float mp-float-l" aria-hidden="true">
+          <Image src="/images/f1.png" alt="" fill className="object-contain" />
         </div>
+        <div className="mp-float mp-float-r" aria-hidden="true">
+          <Image src="/images/f2.png" alt="" fill className="object-contain" />
+        </div>
+        <div className="mp-hero-inner">
+          <span className="mp-tag">Authentic · Fresh · Handcrafted</span>
+          <h1 className="mp-title">Our <span className="mp-title-accent">Menu</span></h1>
+          <p className="mp-subtitle">Explore our full selection of shawarmas, rice dishes &amp; more</p>
+        </div>
+        <div className="mp-wave" aria-hidden="true" />
       </section>
 
-      <section className="py-20 md:py-32 section-surface scroll-animate">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="grid gap-8 lg:grid-cols-[2.5fr_1fr]">
-            <div>
-              <div className="mb-8 py-2">
-                <div className="grid gap-3 sm:grid-flow-col sm:auto-cols-max sm:grid-cols-[repeat(4,minmax(0,1fr))]">
-                  {categoryList.map(category => (
-                    <button
-                      key={category.value}
-                      onClick={() => handleFilter(category.value)}
-                      className={`rounded-3xl border px-3 py-2 text-left text-xs transition-all duration-300 ${
-                        activeFilter === category.value
-                          ? 'border-transparent bg-gradient-to-r from-orange-500 to-orange-400 text-white shadow-xl'
-                          : 'border-gray-200 bg-white text-gray-700 hover:border-orange-300 hover:bg-orange-50'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-white text-base shadow-sm">
-                          {category.icon}
-                        </span>
-                        <div>
-                          <p className="text-[10px] opacity-80">Category</p>
-                          <p className="text-sm font-semibold">{category.label}</p>
-                        </div>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
+      {/* ══ STICKY FILTER BAR ════════════████════════════════════════ */}
+      <div className="mp-filter-bar" role="tablist" aria-label="Menu categories">
+        {categoryList.map(cat => (
+          <button
+            key={cat.value} role="tab"
+            aria-selected={activeFilter === cat.value}
+            onClick={() => handleFilter(cat.value)}
+            className={`mp-pill${activeFilter === cat.value ? ' mp-pill-active' : ''}`}
+          >
+            <span className="mp-pill-icon">{cat.icon}</span>{cat.label}
+          </button>
+        ))}
+      </div>
 
-              <div className="grid gap-5 md:grid-cols-3">
-                {filteredItems.map((item, index) => (
-                  <div
-                    key={item.id}
-                    className="card-advanced bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 scroll-animate"
-                    style={{ animationDelay: `${(index % 3) * 0.1}s` }}
-                  >
-                    <div className="card-image relative h-52 md:h-60 overflow-hidden bg-gray-100">
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        fill
-                        className="object-cover transition-transform duration-500 hover:scale-110"
-                      />
-                    </div>
-                    <div className="p-5 flex flex-col h-full">
-                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                        <div>
-                          <h3 className="text-base font-bold text-slate-900 mb-2">{item.name}</h3>
-                          <p className="text-gray-500 text-xs leading-relaxed">{item.description}</p>
-                        </div>
-                        <div className="rounded-3xl bg-orange-50 px-4 py-2 text-orange-700 font-semibold text-sm">
-                          {item.price}
-                        </div>
-                      </div>
-                      <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                        <button
-                          onClick={() => addToCart({ id: item.id, name: item.name, price: item.price, image: item.image })}
-                          className="inline-flex w-full items-center justify-center rounded-full bg-orange-500 px-4 py-2 text-xs font-semibold text-white shadow-lg transition duration-300 hover:bg-orange-600 sm:w-auto"
-                        >
-                          Add
-                        </button>
-                        <span className="text-[11px] text-gray-500 sm:text-xs">Best choice</span>
-                      </div>
+      {/* ══ BODY ══════════════════════════════════════════════════════ */}
+      <section className="mp-body">
+        <div className="mp-layout">
+
+          {/* ── Menu grid ── */}
+          <div className="mp-grid-col">
+            <div className="mp-grid" role="list">
+              {filteredItems.map(item => (
+                <article
+                  key={item.id} role="listitem"
+                  className={`mp-card${animatingIds.has(item.id) ? ' mp-card-exit' : ' mp-card-enter'}`}
+                >
+                  <div className="mp-card-img-wrap">
+                    <Image src={item.image} alt={item.name} fill className="mp-card-img" unoptimized />
+                    <span className="mp-card-badge">
+                      {categoryList.find(c => c.value === item.category)?.icon} {item.category}
+                    </span>
+                  </div>
+                  <div className="mp-card-body">
+                    <h3 className="mp-card-name">{item.name}</h3>
+                    <div className="mp-card-footer">
+                      <span className="mp-card-price">{item.price}</span>
+                      <button
+                        onClick={() => addToCart({ id: item.id, name: item.name, price: item.price, image: item.image })}
+                        className="mp-add-btn" aria-label={`Add ${item.name} to cart`}
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Add
+                      </button>
                     </div>
                   </div>
-                ))}
+                </article>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Desktop cart sidebar ── */}
+          <div className="mp-cart-wrapper">
+            <aside className="mp-cart" aria-label="Your order">
+              <div className="mp-cart-hdr">
+              <div>
+                <h2 className="mp-cart-title">My Order</h2>
+                <p className="mp-cart-count">{cartItems.length} item{cartItems.length === 1 ? '' : 's'}</p>
+              </div>
+              <div className="mp-cart-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
               </div>
             </div>
 
-            <aside className="rounded-3xl border border-gray-200 bg-white p-5 shadow-lg md:p-6">
-              <div className="flex items-center justify-between mb-5 gap-4">
-                <div>
-                  <h2 className="text-xl font-bold text-slate-900">My Order</h2>
-                  <p className="text-sm text-gray-500">{cartItems.length} item{cartItems.length === 1 ? '' : 's'}</p>
+            <div className="mp-cart-items">
+              {cartItems.length === 0 ? (
+                <div className="mp-cart-empty">
+                  <div className="mp-cart-empty-ico">🛒</div>
+                  <p>Your cart is empty</p>
+                  <span>Add items from the menu</span>
                 </div>
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-orange-100 text-orange-600 text-lg">
-                  🛒
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                {cartItems.length === 0 ? (
-                  <div className="rounded-3xl border border-dashed border-orange-200 bg-orange-50 p-6 text-center text-orange-700">
-                    Add an item to your order
+              ) : cartItems.map(item => (
+                <div key={item.id} className="mp-cart-item">
+                  <div className="mp-ci-img">
+                    <Image src={item.image} alt={item.name} fill className="object-cover" unoptimized />
                   </div>
-                ) : (
-                  cartItems.map(item => (
-                    <div key={item.id} className="rounded-3xl border border-gray-100 p-4">
-                      <div className="flex items-center gap-4">
-                        <div className="relative h-16 w-16 overflow-hidden rounded-3xl bg-gray-100">
-                          <Image src={item.image} alt={item.name} fill className="object-cover" />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-slate-900">{item.name}</h3>
-                          <p className="text-sm text-gray-500">{item.price}</p>
-                        </div>
-                      </div>
-                      <div className="mt-4 flex items-center justify-between gap-3">
-                        <div className="inline-flex items-center rounded-full border border-gray-200 bg-gray-50">
-                          <button
-                            onClick={() => updateQuantity(item.id, -1)}
-                            className="px-3 py-2 text-lg text-orange-600"
-                          >
-                            -
-                          </button>
-                          <span className="px-4 py-2 text-sm font-semibold">{item.quantity}</span>
-                          <button
-                            onClick={() => updateQuantity(item.id, 1)}
-                            className="px-3 py-2 text-lg text-orange-600"
-                          >
-                            +
-                          </button>
-                        </div>
-                        <span className="text-sm font-semibold text-slate-900">RM {getNumericPrice(item.price) * item.quantity}</span>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-
-              <div className="mt-8 rounded-3xl bg-slate-950 p-5 text-white">
-                <div className="flex items-center justify-between text-sm opacity-80">
-                  <span>Estimated total</span>
-                  <span className="font-semibold">RM {totalAmount}</span>
+                  <div className="mp-ci-info">
+                    <h4 className="mp-ci-name">{item.name}</h4>
+                    <span className="mp-ci-price">{item.price}</span>
+                  </div>
+                  <div className="mp-ci-qty">
+                    <button onClick={() => updateQuantity(item.id, -1)} className="mp-qty-btn" aria-label="Decrease">−</button>
+                    <span className="mp-qty-num">{item.quantity}</span>
+                    <button onClick={() => updateQuantity(item.id, 1)}  className="mp-qty-btn" aria-label="Increase">+</button>
+                  </div>
                 </div>
-                <button className="mt-5 w-full rounded-full bg-orange-500 py-3 text-sm font-semibold uppercase tracking-[0.08em] transition hover:bg-orange-600">
-                  Checkout
-                </button>
+              ))}
+            </div>
+
+            <div className="mp-cart-ftr">
+              <div className="mp-total-row">
+                <span className="mp-total-lbl">Estimated total</span>
+                <span className="mp-total-amt">RM {total}</span>
               </div>
-            </aside>
+              <button
+                className="mp-checkout-btn"
+                disabled={cartItems.length === 0}
+                onClick={openInvoice}
+              >
+                {cartItems.length === 0 ? 'Add items to checkout' : 'Proceed to Checkout →'}
+              </button>
+            </div>
+          </aside>
           </div>
+
         </div>
       </section>
+
+      {/* ══ MOBILE FLOATING CART BAR ══════════════════════════════════ */}
+      <div className={`mp-mobile-cart-bar ${cartItems.length > 0 ? 'mp-mcb-visible' : ''}`}>
+        <button className="mp-mcb-trigger" onClick={() => setCartOpen(true)} aria-label="View my order">
+          <div className="mp-mcb-left">
+            <div className="mp-mcb-badge">{totalQty}</div>
+            <span className="mp-mcb-label">View My Order</span>
+          </div>
+          <span className="mp-mcb-total">RM {total}</span>
+        </button>
+      </div>
+
+      {/* ══ MOBILE CART DRAWER ════════════════════════════════════════ */}
+      <div className={`mp-mob-backdrop ${cartOpen ? 'mp-mob-backdrop-show' : ''}`} onClick={() => setCartOpen(false)} aria-hidden="true" />
+      <div className={`mp-mob-drawer ${cartOpen ? 'mp-mob-drawer-open' : ''}`} role="dialog" aria-label="Your order">
+        <div className="mp-mob-handle" />
+        <div className="mp-mob-drawer-hdr">
+          <div>
+            <h2 className="mp-cart-title">My Order</h2>
+            <p className="mp-cart-count">{cartItems.length} item{cartItems.length === 1 ? '' : 's'}</p>
+          </div>
+          <button className="mp-mob-close" onClick={() => setCartOpen(false)} aria-label="Close cart">✕</button>
+        </div>
+
+        <div className="mp-mob-drawer-items">
+          {cartItems.length === 0 ? (
+            <div className="mp-cart-empty">
+              <div className="mp-cart-empty-ico">🛒</div>
+              <p>Your cart is empty</p>
+              <span>Add items from the menu</span>
+            </div>
+          ) : cartItems.map(item => (
+            <div key={item.id} className="mp-mob-order-item">
+              <div className="mp-mob-oi-img">
+                <Image src={item.image} alt={item.name} fill className="object-cover" unoptimized />
+              </div>
+              <div className="mp-mob-oi-info">
+                <h4 className="mp-mob-oi-name">{item.name}</h4>
+                <span className="mp-mob-oi-price">{item.price}</span>
+              </div>
+              <div className="mp-ci-qty">
+                <button onClick={() => updateQuantity(item.id, -1)} className="mp-qty-btn" aria-label="Decrease">−</button>
+                <span className="mp-qty-num">{item.quantity}</span>
+                <button onClick={() => updateQuantity(item.id, 1)}  className="mp-qty-btn" aria-label="Increase">+</button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mp-mob-drawer-ftr">
+          <div className="mp-total-row" style={{ marginBottom: '14px' }}>
+            <span className="mp-total-lbl">Estimated total</span>
+            <span className="mp-total-amt">RM {total}</span>
+          </div>
+          <button
+            className="mp-checkout-btn"
+            disabled={cartItems.length === 0}
+            onClick={openInvoice}
+          >
+            {cartItems.length === 0 ? 'Add items to checkout' : 'Proceed to Checkout →'}
+          </button>
+        </div>
+      </div>
+
+      {/* ══ TOAST ══════════════════════════════════════════════════════ */}
+      <div className={`mp-toast ${toast.visible ? 'mp-toast-show' : ''}`} role="status" aria-live="polite">
+        <span className="mp-toast-icon">✅</span>
+        <span><strong>{toast.name}</strong> added to your order!</span>
+      </div>
+
+      {/* ══ INVOICE MODAL ══════════════════════════════════════════════ */}
+      <div
+        className={`inv-overlay ${invoiceOpen ? 'inv-overlay-show' : ''}`}
+        onClick={() => setInvoiceOpen(false)}
+        aria-hidden="true"
+      />
+      <div className={`inv-modal ${invoiceOpen ? 'inv-modal-show' : ''}`} role="dialog" aria-modal="true" aria-label="Order Invoice">
+
+        {/* ── Close ── */}
+        <button className="inv-close" onClick={() => setInvoiceOpen(false)} aria-label="Close invoice">✕</button>
+
+        {/* ── Invoice card ── */}
+        <div className="inv-card">
+
+          {/* Header stripe */}
+          <div className="inv-header">
+            <div className="inv-logo-wrap">
+              <Image src="/images/logo.png" alt="Shawarma Time Kitchen" fill className="object-contain p-1 invert grayscale" />
+            </div>
+            <div>
+              <div className="inv-brand">Shawarma Time Kitchen</div>
+              <div className="inv-brand-sub">Jalan Teknokrat 6, Cyberjaya, 63000</div>
+              <div className="inv-brand-sub">📞 011-3903 9304 · info@shawarmatimekitchen.com</div>
+            </div>
+            <div className="inv-stamp">ORDER<br/>CONFIRMED</div>
+          </div>
+
+          {/* Ref + Date row */}
+          <div className="inv-meta">
+            <div className="inv-meta-block">
+              <span className="inv-meta-lbl">Reference No.</span>
+              <span className="inv-meta-val inv-ref">{invoiceRef}</span>
+            </div>
+            <div className="inv-meta-block" style={{ textAlign: 'right' }}>
+              <span className="inv-meta-lbl">Date &amp; Time</span>
+              <span className="inv-meta-val">{invoiceDate}</span>
+            </div>
+          </div>
+
+          <div className="inv-divider" />
+
+          {/* Items table */}
+          <div className="inv-table-head">
+            <span>Item</span>
+            <span>Price</span>
+            <span>Qty</span>
+            <span>Subtotal</span>
+          </div>
+          <div className="inv-items">
+            {cartItems.map(item => {
+              const unitPrice = getNumericPrice(item.price)
+              return (
+                <div key={item.id} className="inv-row">
+                  <div className="inv-row-item">
+                    <div className="inv-row-img">
+                      <Image src={item.image} alt={item.name} fill className="object-cover" unoptimized />
+                    </div>
+                    <span className="inv-row-name">{item.name}</span>
+                  </div>
+                  <span className="inv-row-cell">
+                    {unitPrice > 0 ? `RM ${unitPrice}` : item.price}
+                  </span>
+                  <span className="inv-row-cell">{item.quantity}</span>
+                  <span className="inv-row-cell inv-row-sub">
+                    {unitPrice > 0 ? `RM ${unitPrice * item.quantity}` : '—'}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+
+          <div className="inv-divider" />
+
+          {/* Totals */}
+          <div className="inv-totals">
+            <div className="inv-total-line">
+              <span>Subtotal</span><span>RM {total}</span>
+            </div>
+            <div className="inv-total-line">
+              <span>Service Tax (6%)</span>
+              <span>RM {(total * 0.06).toFixed(2)}</span>
+            </div>
+            <div className="inv-total-line inv-grand">
+              <span>Total</span>
+              <span>RM {(total * 1.06).toFixed(2)}</span>
+            </div>
+          </div>
+
+          <div className="inv-divider" />
+
+          {/* Footer note */}
+          <div className="inv-footer-note">
+            <div className="inv-thank">🌯 Thank you for your order!</div>
+            <p>Please show this invoice when collecting your order. Our team will prepare your fresh &amp; authentic meal with love.</p>
+            <div className="inv-qr-row">
+              <div className="inv-qr-fake" aria-hidden="true">
+                {/* Simple SVG QR-like decoration */}
+                <svg viewBox="0 0 60 60" width="60" height="60">
+                  <rect x="2"  y="2"  width="22" height="22" rx="3" fill="none" stroke="currentColor" strokeWidth="3"/>
+                  <rect x="9"  y="9"  width="8"  height="8"  rx="1" fill="currentColor"/>
+                  <rect x="36" y="2"  width="22" height="22" rx="3" fill="none" stroke="currentColor" strokeWidth="3"/>
+                  <rect x="43" y="9"  width="8"  height="8"  rx="1" fill="currentColor"/>
+                  <rect x="2"  y="36" width="22" height="22" rx="3" fill="none" stroke="currentColor" strokeWidth="3"/>
+                  <rect x="9"  y="43" width="8"  height="8"  rx="1" fill="currentColor"/>
+                  <rect x="36" y="30" width="6"  height="6"  rx="1" fill="currentColor"/>
+                  <rect x="44" y="30" width="6"  height="6"  rx="1" fill="currentColor"/>
+                  <rect x="52" y="30" width="6"  height="6"  rx="1" fill="currentColor"/>
+                  <rect x="36" y="38" width="6"  height="6"  rx="1" fill="currentColor"/>
+                  <rect x="44" y="46" width="6"  height="6"  rx="1" fill="currentColor"/>
+                  <rect x="52" y="38" width="6"  height="6"  rx="1" fill="currentColor"/>
+                  <rect x="36" y="52" width="6"  height="6"  rx="1" fill="currentColor"/>
+                  <rect x="52" y="52" width="6"  height="6"  rx="1" fill="currentColor"/>
+                </svg>
+              </div>
+              <div className="inv-qr-txt">
+                <strong>Ref: {invoiceRef}</strong>
+                <br/>Cyberjaya Branch
+              </div>
+            </div>
+          </div>
+
+          {/* Action buttons */}
+          <div className="inv-actions">
+            <button className="inv-btn-secondary" onClick={() => setInvoiceOpen(false)}>← Back to Menu</button>
+            <button className="inv-btn-primary" onClick={() => window.print()}>🖨 Print Invoice</button>
+          </div>
+        </div>
+      </div>
+
     </main>
   )
 }
