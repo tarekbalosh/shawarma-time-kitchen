@@ -274,7 +274,7 @@ export default function BookPage() {
             <motion.div variants={fadeUp} className="text-center pt-8 md:pt-0 group">
               <div className="w-16 h-16 mx-auto bg-white dark:bg-slate-800 rounded-full flex items-center justify-center text-2xl shadow-sm mb-6 group-hover:scale-110 transition-transform duration-300 border border-gray-100 dark:border-slate-700">🕐</div>
               <h3 className="text-sm font-bold uppercase tracking-widest text-gray-900 dark:text-gray-100 mb-3">Opening Hours</h3>
-              <p className="text-gray-600 dark:text-gray-400 font-medium">Everyday<br />10:00 AM - 4:00 AM</p>
+              <p className="text-gray-600 dark:text-gray-400 font-medium">Open 24 Hours</p>
             </motion.div>
           </div>
         </motion.div>

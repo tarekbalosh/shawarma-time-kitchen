@@ -171,7 +171,7 @@ export default function AboutPage() {
           <div className="scroll-animate">
             <div className="text-[10px] md:text-xs font-black tracking-[0.3em] uppercase text-gray-400 dark:text-slate-500 mb-3 transition-colors duration-300 ease-in-out">Open Every Day</div>
             <div className="text-base md:text-lg font-medium tracking-wide text-gray-800 dark:text-gray-200 transition-colors duration-300 ease-in-out">
-              Everyday · 10:00am - 4:00am
+              Open 24 Hours
             </div>
           </div>
 
