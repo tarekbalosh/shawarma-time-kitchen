@@ -2,6 +2,42 @@
 
 import Link from 'next/link'
 
+// ── Minimal "Open 24 Hours" badge ─────────────────────────────────────────────
+function OpenBadge() {
+  return (
+    <div
+      className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8"
+      style={{
+        background: 'rgba(255, 107, 53, 0.12)',
+        border: '1px solid rgba(255, 107, 53, 0.35)',
+      }}
+    >
+      {/* Pulsing green dot */}
+      <svg width="12" height="12" viewBox="0 0 12 12" overflow="visible" aria-hidden="true" className="flex-shrink-0">
+        <circle cx="6" cy="6" r="4" fill="#22c55e" opacity="0.3"
+          style={{ transformOrigin: 'center', animation: 'openbadgePulse 2s ease-out infinite' }} />
+        <circle cx="6" cy="6" r="3" fill="#22c55e" />
+        <style>{`
+          @keyframes openbadgePulse {
+            0%   { r: 3; opacity: 0.5; }
+            70%  { r: 8; opacity: 0;   }
+            100% { r: 8; opacity: 0;   }
+          }
+        `}</style>
+      </svg>
+
+      <span
+        className="text-xs font-bold uppercase tracking-widest"
+        style={{ color: '#ff6b35' }}
+      >
+        Open 24 Hours
+      </span>
+    </div>
+  )
+}
+
+// ── Main Footer ───────────────────────────────────────────────────────────────
+
 export default function Footer() {
   const currentYear = new Date().getFullYear()
 
@@ -9,25 +45,33 @@ export default function Footer() {
     <footer
       className="py-12 border-t flex flex-col items-center justify-center font-sans transition-colors duration-300"
       style={{
-        background: 'var(--ftr-bg)',
+        background:  'var(--ftr-bg)',
         borderColor: 'var(--ftr-border)',
       }}
     >
       <div className="container mx-auto px-4 max-w-6xl flex flex-col items-center text-center">
 
-        {/* Top Horizontal Links */}
-        <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8 mb-8 text-xs md:text-sm font-bold uppercase tracking-widest"
-          style={{ color: 'var(--ftr-link)' }}>
+        {/* ── Top nav links ─────────────────────────────────────────── */}
+        <div
+          className="flex flex-wrap justify-center items-center gap-4 md:gap-8 mb-8
+                     text-xs md:text-sm font-bold uppercase tracking-widest"
+          style={{ color: 'var(--ftr-link)' }}
+        >
           <Link href="/"      className="hover:text-orange-500 transition-colors">Home</Link>
           <Link href="/menu"  className="hover:text-orange-500 transition-colors">Our Menu</Link>
           <Link href="/about" className="hover:text-orange-500 transition-colors">About Us</Link>
           <Link href="/book"  className="text-orange-500 hover:text-orange-400 transition-colors">Order Online</Link>
         </div>
 
-        {/* Contact & Socials */}
+        {/* ── Open 24 Hours badge ───────────────────────────────────── */}
+        <OpenBadge />
+
+        {/* ── Contact & Socials ─────────────────────────────────────── */}
         <div className="flex flex-col items-center mb-8">
-          <p className="text-sm font-bold uppercase tracking-widest mb-4"
-            style={{ color: 'var(--ftr-link)' }}>
+          <p
+            className="text-sm font-bold uppercase tracking-widest mb-4"
+            style={{ color: 'var(--ftr-link)' }}
+          >
             Tell us how we&apos;re doing:{' '}
             <a
               href="mailto:info@shawarmatimekitchen.com"
@@ -36,23 +80,30 @@ export default function Footer() {
               info@shawarmatimekitchen.com
             </a>
           </p>
+
           <div className="flex justify-center gap-4">
+            {/* Facebook */}
             <a
               href="https://www.facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center hover:-translate-y-1 transition-transform"
+              className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center
+                         hover:-translate-y-1 transition-transform"
               aria-label="Facebook"
             >
               <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
               </svg>
             </a>
+
+            {/* Instagram */}
             <a
               href="https://www.instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 rounded-lg flex items-center justify-center hover:-translate-y-1 transition-transform"
+              className="w-10 h-10 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600
+                         rounded-lg flex items-center justify-center
+                         hover:-translate-y-1 transition-transform"
               aria-label="Instagram"
             >
               <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -62,15 +113,23 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Tagline */}
-        <p className="text-xs text-center max-w-xl mx-auto mb-6" style={{ color: 'var(--ftr-txt)' }}>
-          Shawarma Time Kitchen is a locally-owned place for delicious, made-from-scratch middle eastern cuisine served in an upscale, comfortable, family-friendly environment.
+        {/* ── Tagline ───────────────────────────────────────────────── */}
+        <p
+          className="text-xs text-center max-w-xl mx-auto mb-6"
+          style={{ color: 'var(--ftr-txt)' }}
+        >
+          Shawarma Time Kitchen is a locally-owned place for delicious, made-from-scratch
+          middle eastern cuisine served in an upscale, comfortable, family-friendly environment.
         </p>
 
-        {/* Copyright */}
-        <p className="text-xs uppercase tracking-widest font-bold" style={{ color: 'var(--ftr-txt)' }}>
+        {/* ── Copyright ─────────────────────────────────────────────── */}
+        <p
+          className="text-xs uppercase tracking-widest font-bold"
+          style={{ color: 'var(--ftr-txt)' }}
+        >
           &copy; {currentYear} SHAWARMA TIME KITCHEN CO.
         </p>
+
       </div>
     </footer>
   )
